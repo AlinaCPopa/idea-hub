@@ -1,0 +1,25 @@
+# Normalize line endings
+* text=auto
+
+# Treat shell and PowerShell scripts as text
+*.sh text eol=lf
+*.ps1 text eol=crlf
+
+# Mark generated files
+frontend/src/api/generated/types.ts linguist-generated=true
+
+# Ensure yaml stays LF
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Ensure JSON/TS/JS use LF in repo
+*.json text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.js text eol=lf
+
+# Images as binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary

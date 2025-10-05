@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+/.venv/
+*.egg-info/
+.eggs/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+
+# Node
+node_modules/
+dist/
+*.log
+frontend/.vite/
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.DS_Store
+.idea/
+
+# Generated
+frontend/src/api/generated/types.ts
+
+# OS / Misc
+Thumbs.db
+
+# Local environment overrides
+.env.local
+.env.*.local
+
+# SQLite / local DB
+*.db
+*.sqlite3
+backend/dev.db
+
+# Coverage / reports
+coverage/
+
+# Docker artifacts
+*.pid
+
