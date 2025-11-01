@@ -9,7 +9,10 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 60 * 24
     database_url: str = "sqlite:///./dev.db"
     # Comma separated CORS origins, e.g. "http://localhost:5173,https://idea-hub.azurewebsites.net"
-    cors_origins: List[str] = ["http://localhost:5173"]
+    cors_origins: List[str] = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
 
     def model_post_init(self, __context):  # type: ignore[override]
         # Support comma separated string in env var

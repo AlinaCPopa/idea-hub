@@ -1,35 +1,40 @@
-import { useEffect, useState } from 'react';
+import { createContext, createElement, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
 import { api } from '../api/client';
 
-type AuthContext = {
+type AuthContextValue = {
   token: string | null;
-  login: (u: string, p: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 };
 
-let singleton: AuthContext | null = null;
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-export function useAuth(): AuthContext {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
 
-  async function login(username: string, password: string) {
+  const login = useCallback(async (username: string, password: string) => {
     const form = new URLSearchParams();
     form.set('username', username);
     form.set('password', password);
     const res = await api.post('/auth/login', form, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
     setToken(res.data.access_token);
     localStorage.setItem('token', res.data.access_token);
-  }
-  function logout() {
+  }, [setToken]);
+
+  const logout = useCallback(() => {
     setToken(null);
     localStorage.removeItem('token');
-  }
+  }, [setToken]);
 
-  // Keep a stable instance
-  if (!singleton) {
-    singleton = { token, login, logout } as AuthContext;
-  } else {
-    singleton.token = token;
+  const value = useMemo(() => ({ token, login, logout }), [token, login, logout]);
+
+  return createElement(AuthContext.Provider, { value }, children);
+}
+
+export function useAuth(): AuthContextValue {
+  const ctx = useContext(AuthContext);
+  if (!ctx) {
+    throw new Error('useAuth must be used within an AuthProvider');
   }
-  return singleton;
+  return ctx;
 }
